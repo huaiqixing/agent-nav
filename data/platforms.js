@@ -1,14 +1,3 @@
-// 从网站URL提取域名用于Logo
-const getLogoUrl = (website) => {
-  try {
-    const url = new URL(website)
-    const domain = url.hostname.replace('www.', '')
-    return `https://logo.clearbit.com/${domain}`
-  } catch {
-    return null
-  }
-}
-
 export const platforms = [
   {
     id: 'coze-cn',
@@ -16,7 +5,7 @@ export const platforms = [
     nameEn: 'Coze',
     description: '字节跳动出品的国内 Bot 开发平台，插件市场丰富，支持多渠道发布',
     website: 'https://www.coze.cn',
-    logo: getLogoUrl('https://www.coze.cn'),
+    logo: null,
     pricing: '免费',
     pricingDetail: '基础功能免费，部分高级功能付费',
     tags: ['免费', '国内', '无代码', '插件市场'],
@@ -30,7 +19,7 @@ export const platforms = [
     nameEn: 'Coze International',
     description: 'Coze 海外版本，支持 Telegram、Discord、WhatsApp 等海外渠道',
     website: 'https://www.coze.com',
-    logo: getLogoUrl('https://www.coze.com'),
+    logo: null,
     pricing: '免费/付费',
     pricingDetail: '免费版可用，Pro 计划 $5/月',
     tags: ['免费', '海外', '无代码', '多渠道'],
@@ -44,7 +33,7 @@ export const platforms = [
     nameEn: 'Dify',
     description: '开源 LLM 应用开发平台，支持私有化部署，RAG 流程编排',
     website: 'https://dify.ai',
-    logo: getLogoUrl('https://dify.ai'),
+    logo: null,
     pricing: '免费/付费',
     pricingDetail: '开源免费，Dify Cloud 按量付费',
     tags: ['开源', '免费', '可部署', '开发者'],
@@ -58,7 +47,7 @@ export const platforms = [
     nameEn: 'n8n',
     description: '国外最火的工作流自动化平台，可连接 AI，支持自部署',
     website: 'https://n8n.io',
-    logo: getLogoUrl('https://n8n.io'),
+    logo: null,
     pricing: '免费/付费',
     pricingDetail: '开源免费，Cloud 版有免费+付费计划',
     tags: ['开源', '免费', '自动化', '海外'],
@@ -72,7 +61,7 @@ export const platforms = [
     nameEn: 'Gensforge',
     description: '国内新兴 AI Agent 开发平台，专注 Agent 定制与开发',
     website: 'https://gensforge.com',
-    logo: getLogoUrl('https://gensforge.com'),
+    logo: null,
     pricing: '免费/付费',
     pricingDetail: '基础免费，高级功能付费',
     tags: ['免费', '国内', '开发者', '新兴'],
@@ -86,7 +75,7 @@ export const platforms = [
     nameEn: 'DingTalk AI',
     description: '阿里钉钉企业级 AI Agent 平台，深度集成钉钉生态',
     website: 'https://page.dingtalk.com/wow/dingtalk/agent/home',
-    logo: getLogoUrl('https://www.dingtalk.com'),
+    logo: null,
     pricing: '付费',
     pricingDetail: '绑定钉钉企业，按组织规模收费',
     tags: ['企业级', '付费', '国内', '钉钉生态'],
@@ -100,7 +89,7 @@ export const platforms = [
     nameEn: 'Baidu AgentBuilder',
     description: '基于文心大模型的 AI Agent 开发平台，支持 AppBuilder',
     website: 'https://agentbuilder.baidu.com',
-    logo: getLogoUrl('https://agentbuilder.baidu.com'),
+    logo: null,
     pricing: '免费',
     pricingDetail: '免费使用，基于文心大模型 API',
     tags: ['免费', '国内', '百度生态', '大模型'],
@@ -114,7 +103,7 @@ export const platforms = [
     nameEn: 'Microsoft AutoGen',
     description: '微软开源多 Agent 框架，支持 Agent 间协作对话与任务执行',
     website: 'https://microsoft.github.io/autogen',
-    logo: getLogoUrl('https://microsoft.github.io/autogen'),
+    logo: null,
     pricing: '免费',
     pricingDetail: '完全开源免费',
     tags: ['开源', '免费', '微软', '多 Agent'],
@@ -128,7 +117,7 @@ export const platforms = [
     nameEn: 'LangChain',
     description: 'LLM 应用开发框架，学术界最流行，丰富工具链与集成',
     website: 'https://python.langchain.com',
-    logo: getLogoUrl('https://python.langchain.com'),
+    logo: null,
     pricing: '免费',
     pricingDetail: '完全开源免费',
     tags: ['开源', '免费', '开发者', '框架'],
@@ -142,7 +131,7 @@ export const platforms = [
     nameEn: 'ReAct Agent',
     description: '推理+执行 Agent 框架，结合 Reasoning 与 Acting，学术界主流方法',
     website: 'https://reactagent.ai',
-    logo: getLogoUrl('https://reactagent.ai'),
+    logo: null,
     pricing: '免费',
     pricingDetail: '开源免费',
     tags: ['开源', '免费', '学术', '推理框架'],
@@ -156,7 +145,7 @@ export const platforms = [
     nameEn: 'CrewAI',
     description: '多 Agent 协作平台，角色扮演式 Agent 协作，场景化强',
     website: 'https://crewai.com',
-    logo: getLogoUrl('https://crewai.com'),
+    logo: null,
     pricing: '免费/付费',
     pricingDetail: '开源免费，Cloud 版付费',
     tags: ['开源', '免费', '多 Agent', '场景化'],
@@ -170,7 +159,7 @@ export const platforms = [
     nameEn: 'Flowise',
     description: '低代码 LLM 应用构建，拖拽式流程编排，类 Dify 但更轻量',
     website: 'https://flowiseai.com',
-    logo: getLogoUrl('https://flowiseai.com'),
+    logo: null,
     pricing: '免费/付费',
     pricingDetail: '开源免费，Cloud 版有付费计划',
     tags: ['开源', '免费', '低代码', '轻量'],
@@ -184,7 +173,7 @@ export const platforms = [
     nameEn: 'Local Agent (Dify + Ollama)',
     description: '完全本地运行的 AI Agent 方案，隐私优先，无需联网',
     website: 'https://ollama.ai',
-    logo: getLogoUrl('https://ollama.ai'),
+    logo: null,
     pricing: '免费',
     pricingDetail: '软件免费，只需本地硬件',
     tags: ['开源', '免费', '本地', '隐私优先'],
