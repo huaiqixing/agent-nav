@@ -34,7 +34,15 @@ function PlatformCard({ platform }) {
               className="w-8 h-8 object-contain"
               onError={(e) => {
                 e.target.style.display = 'none'
-                e.target.parentNode.innerHTML = '<span class="text-xl">🤖</span>'
+                const parent = e.target.parentNode
+                const name = platform.name || platform.nameEn || '?'
+                const initial = name[0].toUpperCase()
+                const colors = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#3b82f6','#ef4444','#14b8a6']
+                const color = colors[name.charCodeAt(0) % colors.length]
+                const span = document.createElement('span')
+                span.textContent = initial
+                span.style.cssText = `width:48px;height:48px;border-radius:10px;background:${color};display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:bold;color:white;`
+                parent.appendChild(span)
               }}
             />
           ) : (

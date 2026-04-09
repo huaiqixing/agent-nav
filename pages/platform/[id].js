@@ -78,7 +78,15 @@ export default function PlatformDetail({ platform, relatedPlatforms }) {
                   className="w-14 h-14 object-contain"
                   onError={(e) => {
                     e.target.style.display = 'none'
-                    e.target.parentNode.innerHTML = '<span class="text-3xl">🤖</span>'
+                    const parent = e.target.parentNode
+                    const name = platform.name || platform.nameEn || '?'
+                    const initial = name[0].toUpperCase()
+                    const colors = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#3b82f6','#ef4444','#14b8a6']
+                    const color = colors[name.charCodeAt(0) % colors.length]
+                    const span = document.createElement('span')
+                    span.textContent = initial
+                    span.style.cssText = `width:56px;height:56px;border-radius:10px;background:${color};display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:bold;color:white;`
+                    parent.appendChild(span)
                   }}
                 />
               ) : (
@@ -189,7 +197,15 @@ export default function PlatformDetail({ platform, relatedPlatforms }) {
                         <img src={p.logo} alt={p.name} className="w-7 h-7 object-contain"
                           onError={(e) => {
                             e.target.style.display = 'none'
-                            e.target.parentNode.innerHTML = '<span>🤖</span>'
+                            const parent = e.target.parentNode
+                            const name = p.name || p.nameEn || '?'
+                            const initial = name[0].toUpperCase()
+                            const colors = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#3b82f6','#ef4444','#14b8a6']
+                            const color = colors[name.charCodeAt(0) % colors.length]
+                            const span = document.createElement('span')
+                            span.textContent = initial
+                            span.style.cssText = `width:40px;height:40px;border-radius:8px;background:${color};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:bold;color:white;`
+                            parent.appendChild(span)
                           }}
                         />
                       ) : (
