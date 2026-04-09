@@ -1,0 +1,209 @@
+{
+  "version": 4,
+  "routes": {
+    "/platform/autogen": {
+      "initialRevalidateSeconds": 3600,
+      "initialExpireSeconds": 31536000,
+      "srcRoute": "/platform/[id]",
+      "dataRoute": "/_next/data/qwVomgv1eD_ZKy4h4vPsV/platform/autogen.json",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/platform/baidu-agentbuilder": {
+      "initialRevalidateSeconds": 3600,
+      "initialExpireSeconds": 31536000,
+      "srcRoute": "/platform/[id]",
+      "dataRoute": "/_next/data/qwVomgv1eD_ZKy4h4vPsV/platform/baidu-agentbuilder.json",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/platform/coze-cn": {
+      "initialRevalidateSeconds": 3600,
+      "initialExpireSeconds": 31536000,
+      "srcRoute": "/platform/[id]",
+      "dataRoute": "/_next/data/qwVomgv1eD_ZKy4h4vPsV/platform/coze-cn.json",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/platform/coze-intl": {
+      "initialRevalidateSeconds": 3600,
+      "initialExpireSeconds": 31536000,
+      "srcRoute": "/platform/[id]",
+      "dataRoute": "/_next/data/qwVomgv1eD_ZKy4h4vPsV/platform/coze-intl.json",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/platform/crewai": {
+      "initialRevalidateSeconds": 3600,
+      "initialExpireSeconds": 31536000,
+      "srcRoute": "/platform/[id]",
+      "dataRoute": "/_next/data/qwVomgv1eD_ZKy4h4vPsV/platform/crewai.json",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/platform/dify": {
+      "initialRevalidateSeconds": 3600,
+      "initialExpireSeconds": 31536000,
+      "srcRoute": "/platform/[id]",
+      "dataRoute": "/_next/data/qwVomgv1eD_ZKy4h4vPsV/platform/dify.json",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/platform/dingtalk-ai": {
+      "initialRevalidateSeconds": 3600,
+      "initialExpireSeconds": 31536000,
+      "srcRoute": "/platform/[id]",
+      "dataRoute": "/_next/data/qwVomgv1eD_ZKy4h4vPsV/platform/dingtalk-ai.json",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/platform/flowise": {
+      "initialRevalidateSeconds": 3600,
+      "initialExpireSeconds": 31536000,
+      "srcRoute": "/platform/[id]",
+      "dataRoute": "/_next/data/qwVomgv1eD_ZKy4h4vPsV/platform/flowise.json",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/platform/gensforge": {
+      "initialRevalidateSeconds": 3600,
+      "initialExpireSeconds": 31536000,
+      "srcRoute": "/platform/[id]",
+      "dataRoute": "/_next/data/qwVomgv1eD_ZKy4h4vPsV/platform/gensforge.json",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/platform/langchain": {
+      "initialRevalidateSeconds": 3600,
+      "initialExpireSeconds": 31536000,
+      "srcRoute": "/platform/[id]",
+      "dataRoute": "/_next/data/qwVomgv1eD_ZKy4h4vPsV/platform/langchain.json",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/platform/n8n": {
+      "initialRevalidateSeconds": 3600,
+      "initialExpireSeconds": 31536000,
+      "srcRoute": "/platform/[id]",
+      "dataRoute": "/_next/data/qwVomgv1eD_ZKy4h4vPsV/platform/n8n.json",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/platform/ollama-dify": {
+      "initialRevalidateSeconds": 3600,
+      "initialExpireSeconds": 31536000,
+      "srcRoute": "/platform/[id]",
+      "dataRoute": "/_next/data/qwVomgv1eD_ZKy4h4vPsV/platform/ollama-dify.json",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    },
+    "/platform/react-agent": {
+      "initialRevalidateSeconds": 3600,
+      "initialExpireSeconds": 31536000,
+      "srcRoute": "/platform/[id]",
+      "dataRoute": "/_next/data/qwVomgv1eD_ZKy4h4vPsV/platform/react-agent.json",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    }
+  },
+  "dynamicRoutes": {
+    "/platform/[id]": {
+      "routeRegex": "^/platform/([^/]+?)(?:/)?$",
+      "dataRoute": "/_next/data/qwVomgv1eD_ZKy4h4vPsV/platform/[id].json",
+      "fallback": "/platform/[id].html",
+      "dataRouteRegex": "^/_next/data/qwVomgv1eD_ZKy4h4vPsV/platform/([^/]+?)\\.json$",
+      "allowHeader": [
+        "host",
+        "x-matched-path",
+        "x-prerender-revalidate",
+        "x-prerender-revalidate-if-generated",
+        "x-next-revalidated-tags",
+        "x-next-revalidate-tag-token"
+      ]
+    }
+  },
+  "notFoundRoutes": [],
+  "preview": {
+    "previewModeId": "bed38246726d5ea00c6e06ed38fe8d9e",
+    "previewModeSigningKey": "634b5c7b9aef16fa0e0f7a2cca77fc8f40c342f4302f5127df63bb49ac5e2c1f",
+    "previewModeEncryptionKey": "4ed447b88d044073db8e9827171b0faff447fe4350a672fb05d8ba6915123fce"
+  }
+}
