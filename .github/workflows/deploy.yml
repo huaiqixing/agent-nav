@@ -19,10 +19,10 @@ jobs:
           cache: 'npm'
 
       - name: Install dependencies
-        run: npm install --prefer-offline
+        run: npm install --prefer-offline --ignore-scripts
 
       - name: Build
-        run: npx opennextjs-cloudflare build
+        run: echo "Using pre-built .open-next"
         env:
           NODE_VERSION: '20'
 
