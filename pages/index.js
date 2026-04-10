@@ -22,73 +22,143 @@ function getTagClass(tag) {
   return map[tag] || 'bg-gray-100 text-gray-600'
 }
 
-function PlatformCard({ platform }) {
+function PlatformCard({ platform, index }) {
   const [imgError, setImgError] = useState(false)
+  const [isHovered, setIsHovered] = useState(false)
 
   return (
     <motion.div
       layout
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, scale: 0.95 }}
-      whileHover={{ y: -4, transition: { duration: 0.2 } }}
-      transition={{ duration: 0.2 }}
+      transition={{ duration: 0.3, delay: index * 0.05 }}
+      whileHover={{ y: -8, scale: 1.02 }}
+      onHoverStart={() => setIsHovered(true)}
+      onHoverEnd={() => setIsHovered(false)}
+      className="group relative"
     >
-      <Link href={`/platform/${platform.id}`} className="card hover:shadow-lg transition-shadow block h-full">
-        <div className="flex items-start gap-3 mb-3">
-          {/* Logo */}
-          <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0 border border-indigo-100 text-indigo-600 font-bold text-xl">
-            {platform.logo && !imgError ? (
-              <img 
-                src={platform.logo} 
-                alt={platform.name}
-                className="w-full h-full object-contain p-1"
-                onError={() => setImgError(true)}
-              />
-            ) : (
-              <span>{platform.name.charAt(0)}</span>
-            )}
+      {/* 渐变边框效果 */}
+      <div className={`absolute -inset-0.5 bg-gradient-to-r from-primary-500 via-accent-500 to-vibrant-500 rounded-2xl opacity-0 group-hover:opacity-75 transition duration-500 blur-sm`}></div>
+
+      <Link href={`/platform/${platform.id}`} className="relative block h-full">
+        <div className="relative bg-white rounded-2xl p-6 h-full shadow-sm group-hover:shadow-2xl transition-all duration-300">
+          {/* Logo 区域 - 不规则设计 */}
+          <div className="flex items-start gap-4 mb-4">
+            <motion.div
+              className="relative w-16 h-16 rounded-2xl bg-gradient-to-br from-primary-100 to-accent-100 flex items-center justify-center overflow-hidden shadow-md group-hover:shadow-lg transition-shadow"
+              whileHover={{ rotate: 360 }}
+              transition={{ duration: 0.6, type: "spring" }}
+            >
+              {platform.logo && !imgError ? (
+                <img
+                  src={platform.logo}
+                  alt={platform.name}
+                  className="w-full h-full object-contain p-2"
+                  onError={() => setImgError(true)}
+                />
+              ) : (
+                <span className="text-2xl font-bold bg-gradient-to-br from-primary-600 to-accent-600 bg-clip-text text-transparent">
+                  {platform.name.charAt(0)}
+                </span>
+              )}
+
+              {/* 悬停时的发光效果 */}
+              <div className={`absolute inset-0 bg-gradient-to-br from-primary-400 to-accent-400 opacity-0 group-hover:opacity-20 transition-opacity`}></div>
+            </motion.div>
+
+            <div className="flex-1 min-w-0">
+              <h3 className="text-xl font-bold text-gray-900 group-hover:text-primary-600 transition-colors">
+                {platform.name}
+              </h3>
+              <p className="text-sm text-gray-500">{platform.nameEn}</p>
+            </div>
+
+            {/* 动态标签 */}
+            <motion.span
+              className={`px-3 py-1.5 rounded-full text-xs font-bold ${
+                platform.pricing === '免费'
+                  ? 'bg-gradient-to-r from-green-400 to-emerald-500 text-white'
+                  : platform.pricing === '付费'
+                  ? 'bg-gradient-to-r from-red-400 to-rose-500 text-white'
+                  : 'bg-gradient-to-r from-yellow-400 to-orange-500 text-white'
+              } shadow-md`}
+              whileHover={{ scale: 1.1 }}
+            >
+              {platform.pricing}
+            </motion.span>
           </div>
-          <div className="flex-1 min-w-0">
-            <h3 className="text-lg font-semibold text-gray-900">{platform.name}</h3>
-            <p className="text-xs text-gray-500">{platform.nameEn}</p>
-          </div>
-          <span className={`tag ${getPricingTag(platform.pricing)}`}>{platform.pricing}</span>
-        </div>
-        
-        <p className="text-sm text-gray-600 mb-4 line-clamp-2">{platform.description}</p>
-        
-        <div className="flex flex-wrap gap-1.5 mb-4">
-          {platform.tags.map(tag => (
-            <span key={tag} className={`tag ${getTagClass(tag)}`}>{tag}</span>
-          ))}
-        </div>
-        
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className={`text-xs font-medium ${
-              platform.difficulty === '低' ? 'difficulty-low' :
-              platform.difficulty === '中' ? 'difficulty-medium' : 'difficulty-high'
-            }`}>
-              难度：{platform.difficulty}
-            </span>
-            {platform.guides && platform.guides.length > 0 && (
-              <span className="flex items-center gap-0.5 text-[10px] bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded-full border border-indigo-100">
-                📚 {platform.guides.length} 指南
+
+          <p className="text-gray-600 mb-4 line-clamp-2 leading-relaxed">
+            {platform.description}
+          </p>
+
+          {/* 标签区域 - 横向滚动 */}
+          <div className="flex flex-wrap gap-2 mb-4">
+            {platform.tags.slice(0, 3).map((tag, idx) => (
+              <motion.span
+                key={tag}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: idx * 0.05 }}
+                className={`px-2.5 py-1 rounded-lg text-xs font-medium ${
+                  tag === '免费' ? 'bg-green-50 text-green-700 border border-green-200' :
+                  tag === '开源' ? 'bg-purple-50 text-purple-700 border border-purple-200' :
+                  tag === '国内' ? 'bg-orange-50 text-orange-700 border border-orange-200' :
+                  tag === '海外' ? 'bg-blue-50 text-blue-700 border border-blue-200' :
+                  'bg-gray-50 text-gray-700 border border-gray-200'
+                }`}
+                whileHover={{ scale: 1.05 }}
+              >
+                {tag}
+              </motion.span>
+            ))}
+            {platform.tags.length > 3 && (
+              <span className="px-2.5 py-1 rounded-lg text-xs font-medium bg-gray-100 text-gray-500">
+                +{platform.tags.length - 3}
               </span>
             )}
           </div>
-          <span className="text-sm font-medium text-indigo-600">
-            查看详情 →
-          </span>
+
+          {/* 底部信息栏 */}
+          <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+            <div className="flex items-center gap-3">
+              <span className={`text-xs font-bold px-2 py-1 rounded-md ${
+                platform.difficulty === '低' ? 'bg-green-100 text-green-700' :
+                platform.difficulty === '中' ? 'bg-yellow-100 text-yellow-700' :
+                'bg-red-100 text-red-700'
+              }`}>
+                {platform.difficulty}难度
+              </span>
+              {platform.guides && platform.guides.length > 0 && (
+                <motion.span
+                  className="flex items-center gap-1 text-xs bg-primary-50 text-primary-700 px-2 py-1 rounded-md border border-primary-200"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  <span>📚</span>
+                  <span>{platform.guides.length} 指南</span>
+                </motion.span>
+              )}
+            </div>
+
+            <motion.div
+              className="flex items-center gap-1 text-primary-600 font-semibold text-sm group-hover:gap-2 transition-all"
+              animate={{ x: isHovered ? 5 : 0 }}
+            >
+              查看详情
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </motion.div>
+          </div>
         </div>
       </Link>
     </motion.div>
   )
 }
 
-function FilterBar({ 
-  activeCategory, 
+function FilterBar({
+  activeCategory,
   setActiveCategory,
   activePricing,
   setActivePricing,
@@ -98,102 +168,142 @@ function FilterBar({
   setSearchQuery,
 }) {
   return (
-    <div className="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-6">
+    <motion.div
+      className="bg-white/80 backdrop-blur-lg rounded-3xl p-6 shadow-xl border border-white/50 mb-8"
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       {/* 搜索框 */}
-      <div className="mb-4">
-        <input
-          type="text"
-          placeholder="搜索平台、框架..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="w-full px-4 py-2.5 rounded-xl border border-gray-200 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 outline-none transition-all"
-        />
+      <div className="mb-6">
+        <div className="relative">
+          <input
+            type="text"
+            placeholder="搜索平台、框架..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            className="w-full px-5 py-3.5 rounded-xl border-2 border-gray-200 focus:border-primary-500 focus:ring-4 focus:ring-primary-100 outline-none transition-all text-gray-800 placeholder-gray-400"
+          />
+          <motion.div
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400"
+            animate={{ scale: searchQuery ? [1, 1.1, 1] : 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+            </svg>
+          </motion.div>
+        </div>
       </div>
-      
-      {/* 筛选器 */}
-      <div className="flex flex-wrap gap-4">
-        {/* 分类 */}
+
+      {/* 筛选器 - 横向滚动设计 */}
+      <div className="space-y-4">
+        {/* 分类筛选 */}
         <div>
-          <span className="text-xs text-gray-500 block mb-1.5">分类</span>
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-sm font-bold text-gray-700 flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-primary-500"></span>
+              分类
+            </span>
+          </div>
+          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
             {categories.map(cat => (
-              <button
+              <motion.button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
-                className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors relative ${
+                className={`relative px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all ${
                   activeCategory === cat.id
                     ? 'text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 {activeCategory === cat.id && (
                   <motion.div
                     layoutId="activeCategory"
-                    className="absolute inset-0 bg-indigo-600 rounded-lg"
+                    className="absolute inset-0 bg-gradient-primary rounded-xl"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
-                <span className="relative z-10">{cat.name} ({cat.count})</span>
-              </button>
+                <span className="relative z-10 flex items-center gap-2">
+                  {cat.name}
+                  <span className={`px-1.5 py-0.5 rounded-md text-xs ${
+                    activeCategory === cat.id ? 'bg-white/20' : 'bg-gray-200'
+                  }`}>
+                    {cat.count}
+                  </span>
+                </span>
+              </motion.button>
             ))}
           </div>
         </div>
-        
-        {/* 收费 */}
+
+        {/* 收费筛选 */}
         <div>
-          <span className="text-xs text-gray-500 block mb-1.5">收费</span>
-          <div className="flex flex-wrap gap-1.5">
+          <span className="text-sm font-bold text-gray-700 flex items-center gap-2 mb-3">
+            <span className="w-2 h-2 rounded-full bg-accent-500"></span>
+            收费模式
+          </span>
+          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
             {pricingOptions.map(opt => (
-              <button
+              <motion.button
                 key={opt}
                 onClick={() => setActivePricing(opt)}
-                className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors relative ${
+                className={`relative px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all ${
                   activePricing === opt
                     ? 'text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 {activePricing === opt && (
                   <motion.div
                     layoutId="activePricing"
-                    className="absolute inset-0 bg-indigo-600 rounded-lg"
+                    className="absolute inset-0 bg-gradient-accent rounded-xl"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
                 <span className="relative z-10">{opt}</span>
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>
-        
-        {/* 难度 */}
+
+        {/* 难度筛选 */}
         <div>
-          <span className="text-xs text-gray-500 block mb-1.5">难度</span>
-          <div className="flex flex-wrap gap-1.5">
+          <span className="text-sm font-bold text-gray-700 flex items-center gap-2 mb-3">
+            <span className="w-2 h-2 rounded-full bg-vibrant-500"></span>
+            难度等级
+          </span>
+          <div className="flex gap-2 overflow-x-auto pb-2 scrollbar-hide">
             {difficultyOptions.map(opt => (
-              <button
+              <motion.button
                 key={opt}
                 onClick={() => setActiveDifficulty(opt)}
-                className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors relative ${
+                className={`relative px-4 py-2 rounded-xl text-sm font-semibold whitespace-nowrap transition-all ${
                   activeDifficulty === opt
                     ? 'text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
               >
                 {activeDifficulty === opt && (
                   <motion.div
                     layoutId="activeDifficulty"
-                    className="absolute inset-0 bg-indigo-600 rounded-lg"
+                    className="absolute inset-0 bg-gradient-vibrant rounded-xl"
                     transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
                   />
                 )}
                 <span className="relative z-10">{opt}</span>
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
@@ -233,20 +343,99 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      {/* Header */}
-      <header className="bg-white border-b border-gray-100 flex-shrink-0">
-        <div className="max-w-6xl mx-auto px-4 py-6">
-          <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-gray-900">🤖 AI Agent 平台导航</h1>
-              <p className="text-sm text-gray-500 mt-0.5">发现最优质的 AI Agent 开发工具</p>
+      {/* Header - Hero Section */}
+      <motion.header
+        className="relative overflow-hidden flex-shrink-0"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.8 }}
+      >
+        {/* 动态背景层 */}
+        <div className="absolute inset-0 animated-gradient opacity-90"></div>
+
+        {/* 装饰性元素 */}
+        <div className="absolute top-20 left-10 w-72 h-72 bg-accent-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float"></div>
+        <div className="absolute top-40 right-10 w-72 h-72 bg-primary-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style={{animationDelay: '2s'}}></div>
+        <div className="absolute bottom-20 left-1/2 w-72 h-72 bg-vibrant-400 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-float" style={{animationDelay: '4s'}}></div>
+
+        {/* 内容层 */}
+        <div className="relative max-w-6xl mx-auto px-4 py-16 md:py-24">
+          <motion.div
+            initial={{ y: 30, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.2 }}
+            className="text-center"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 mb-6">
+              <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+              <span className="text-white text-sm font-medium">收录 {platforms.length}+ 优质平台</span>
             </div>
-            <div className="text-sm text-gray-400">
-              共 {platforms.length} 个平台/框架
+
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+              AI Agent
+              <span className="block bg-gradient-to-r from-white via-pink-200 to-yellow-200 bg-clip-text text-transparent">
+                平台导航
+              </span>
+            </h1>
+
+            <p className="text-lg md:text-xl text-white/90 max-w-2xl mx-auto mb-8">
+              发现最优质的 AI Agent 开发工具，助力你的创意实现
+            </p>
+
+            {/* 快速搜索 */}
+            <motion.div
+              className="max-w-xl mx-auto"
+              whileHover={{ scale: 1.02 }}
+              transition={{ type: "spring", stiffness: 300 }}
+            >
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="搜索你感兴趣的平台..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full px-6 py-4 rounded-2xl bg-white/95 backdrop-blur-sm border-2 border-transparent focus:border-white/50 outline-none shadow-2xl text-gray-800 placeholder-gray-400 text-lg"
+                />
+                <div className="absolute right-3 top-1/2 -translate-y-1/2">
+                  <motion.button
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="p-2 rounded-xl bg-gradient-primary text-white shadow-lg"
+                  >
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </motion.button>
+                </div>
+              </div>
+            </motion.div>
+
+            {/* 快速导航标签 */}
+            <div className="flex flex-wrap justify-center gap-3 mt-8">
+              {['热门推荐', '免费工具', '开源框架', '低代码平台'].map((tag, idx) => (
+                <motion.button
+                  key={tag}
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.6 + idx * 0.1 }}
+                  whileHover={{ scale: 1.05, y: -2 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="px-4 py-2 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 text-white text-sm font-medium hover:bg-white/30 transition-all"
+                >
+                  {tag}
+                </motion.button>
+              ))}
             </div>
-          </div>
+          </motion.div>
         </div>
-      </header>
+
+        {/* 底部波浪 */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg className="w-full h-16 md:h-24 text-gray-50" viewBox="0 0 1440 120" preserveAspectRatio="none">
+            <path fill="currentColor" d="M0,64L48,69.3C96,75,192,85,288,80C384,75,480,53,576,48C672,43,768,53,864,69.3C960,85,1056,107,1152,101.3C1248,96,1344,64,1392,48L1440,32L1440,120L1392,120C1344,120,1248,120,1152,120C1056,120,960,120,864,120C768,120,672,120,576,120C480,120,384,120,288,120C192,120,96,120,48,120L0,120Z"></path>
+          </svg>
+        </div>
+      </motion.header>
 
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
@@ -269,8 +458,8 @@ export default function Home() {
         {/* 卡片列表 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           <AnimatePresence mode="popLayout">
-            {filteredPlatforms.map(platform => (
-              <PlatformCard key={platform.id} platform={platform} />
+            {filteredPlatforms.map((platform, index) => (
+              <PlatformCard key={platform.id} platform={platform} index={index} />
             ))}
           </AnimatePresence>
         </div>
