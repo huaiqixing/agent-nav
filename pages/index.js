@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
+import { motion, AnimatePresence } from 'framer-motion'
 import { platforms, categories, pricingOptions, difficultyOptions } from '../data/platforms'
 
 function getPricingTag(pricing) {
@@ -22,60 +23,67 @@ function getTagClass(tag) {
 }
 
 function PlatformCard({ platform }) {
+  const [imgError, setImgError] = useState(false)
+
   return (
-    <Link href={`/platform/${platform.id}`} className="card hover:shadow-md transition-shadow block">
-      <div className="flex items-start gap-3 mb-3">
-        {/* Logo */}
-        <div className="w-12 h-12 bg-gray-50 rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0 border border-gray-100">
-          {platform.logo ? (
-            <img 
-              src={platform.logo} 
-              alt={platform.name}
-              className="w-8 h-8 object-contain"
-              onError={(e) => {
-                e.target.style.display = 'none'
-                const parent = e.target.parentNode
-                const name = platform.name || platform.nameEn || '?'
-                const initial = name[0].toUpperCase()
-                const colors = ['#6366f1','#8b5cf6','#ec4899','#f59e0b','#10b981','#3b82f6','#ef4444','#14b8a6']
-                const color = colors[name.charCodeAt(0) % colors.length]
-                const span = document.createElement('span')
-                span.textContent = initial
-                span.style.cssText = `width:48px;height:48px;border-radius:10px;background:${color};display:flex;align-items:center;justify-content:center;font-size:20px;font-weight:bold;color:white;`
-                parent.appendChild(span)
-              }}
-            />
-          ) : (
-            <span className="text-xl">🤖</span>
-          )}
+    <motion.div
+      layout
+      initial={{ opacity: 0, scale: 0.95 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.95 }}
+      whileHover={{ y: -4, transition: { duration: 0.2 } }}
+      transition={{ duration: 0.2 }}
+    >
+      <Link href={`/platform/${platform.id}`} className="card hover:shadow-lg transition-shadow block h-full">
+        <div className="flex items-start gap-3 mb-3">
+          {/* Logo */}
+          <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center overflow-hidden flex-shrink-0 border border-indigo-100 text-indigo-600 font-bold text-xl">
+            {platform.logo && !imgError ? (
+              <img 
+                src={platform.logo} 
+                alt={platform.name}
+                className="w-full h-full object-contain p-1"
+                onError={() => setImgError(true)}
+              />
+            ) : (
+              <span>{platform.name.charAt(0)}</span>
+            )}
+          </div>
+          <div className="flex-1 min-w-0">
+            <h3 className="text-lg font-semibold text-gray-900">{platform.name}</h3>
+            <p className="text-xs text-gray-500">{platform.nameEn}</p>
+          </div>
+          <span className={`tag ${getPricingTag(platform.pricing)}`}>{platform.pricing}</span>
         </div>
-        <div className="flex-1 min-w-0">
-          <h3 className="text-lg font-semibold text-gray-900">{platform.name}</h3>
-          <p className="text-xs text-gray-500">{platform.nameEn}</p>
+        
+        <p className="text-sm text-gray-600 mb-4 line-clamp-2">{platform.description}</p>
+        
+        <div className="flex flex-wrap gap-1.5 mb-4">
+          {platform.tags.map(tag => (
+            <span key={tag} className={`tag ${getTagClass(tag)}`}>{tag}</span>
+          ))}
         </div>
-        <span className={`tag ${getPricingTag(platform.pricing)}`}>{platform.pricing}</span>
-      </div>
-      
-      <p className="text-sm text-gray-600 mb-4 line-clamp-2">{platform.description}</p>
-      
-      <div className="flex flex-wrap gap-1.5 mb-4">
-        {platform.tags.map(tag => (
-          <span key={tag} className={`tag ${getTagClass(tag)}`}>{tag}</span>
-        ))}
-      </div>
-      
-      <div className="flex items-center justify-between">
-        <span className={`text-xs font-medium ${
-          platform.difficulty === '低' ? 'difficulty-low' :
-          platform.difficulty === '中' ? 'difficulty-medium' : 'difficulty-high'
-        }`}>
-          难度：{platform.difficulty}
-        </span>
-        <span className="text-sm font-medium text-indigo-600">
-          查看详情 →
-        </span>
-      </div>
-    </Link>
+        
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span className={`text-xs font-medium ${
+              platform.difficulty === '低' ? 'difficulty-low' :
+              platform.difficulty === '中' ? 'difficulty-medium' : 'difficulty-high'
+            }`}>
+              难度：{platform.difficulty}
+            </span>
+            {platform.guides && platform.guides.length > 0 && (
+              <span className="flex items-center gap-0.5 text-[10px] bg-indigo-50 text-indigo-600 px-1.5 py-0.5 rounded-full border border-indigo-100">
+                📚 {platform.guides.length} 指南
+              </span>
+            )}
+          </div>
+          <span className="text-sm font-medium text-indigo-600">
+            查看详情 →
+          </span>
+        </div>
+      </Link>
+    </motion.div>
   )
 }
 
@@ -112,13 +120,20 @@ function FilterBar({
               <button
                 key={cat.id}
                 onClick={() => setActiveCategory(cat.id)}
-                className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors relative ${
                   activeCategory === cat.id
-                    ? 'bg-indigo-600 text-white'
+                    ? 'text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
-                {cat.name} ({cat.count})
+                {activeCategory === cat.id && (
+                  <motion.div
+                    layoutId="activeCategory"
+                    className="absolute inset-0 bg-indigo-600 rounded-lg"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+                <span className="relative z-10">{cat.name} ({cat.count})</span>
               </button>
             ))}
           </div>
@@ -132,13 +147,20 @@ function FilterBar({
               <button
                 key={opt}
                 onClick={() => setActivePricing(opt)}
-                className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors relative ${
                   activePricing === opt
-                    ? 'bg-indigo-600 text-white'
+                    ? 'text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
-                {opt}
+                {activePricing === opt && (
+                  <motion.div
+                    layoutId="activePricing"
+                    className="absolute inset-0 bg-indigo-600 rounded-lg"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+                <span className="relative z-10">{opt}</span>
               </button>
             ))}
           </div>
@@ -152,13 +174,20 @@ function FilterBar({
               <button
                 key={opt}
                 onClick={() => setActiveDifficulty(opt)}
-                className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors ${
+                className={`px-3 py-1 rounded-lg text-sm font-medium transition-colors relative ${
                   activeDifficulty === opt
-                    ? 'bg-indigo-600 text-white'
+                    ? 'text-white'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                 }`}
               >
-                {opt}
+                {activeDifficulty === opt && (
+                  <motion.div
+                    layoutId="activeDifficulty"
+                    className="absolute inset-0 bg-indigo-600 rounded-lg"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+                <span className="relative z-10">{opt}</span>
               </button>
             ))}
           </div>
@@ -196,16 +225,16 @@ export default function Home() {
   }, [activeCategory, activePricing, activeDifficulty, searchQuery])
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       <Head>
         <title>AI Agent 平台导航 - 发现最优质的 AI Agent 开发工具</title>
-        <meta name="description" content="收录国内外主流 AI Agent 平台、框架和工具，帮你快速找到适合的 AI Agent 开发方案" />
+        <meta name="description" content="收录国内外主流 AI Agent 平台、框架 and 工具，帮你快速找到适合的 AI Agent 开发方案" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       {/* Header */}
-      <header className="bg-white border-b border-gray-100">
+      <header className="bg-white border-b border-gray-100 flex-shrink-0">
         <div className="max-w-6xl mx-auto px-4 py-6">
           <div className="flex items-center justify-between">
             <div>
@@ -220,7 +249,7 @@ export default function Home() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-6xl mx-auto px-4 py-8">
+      <main className="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
         <FilterBar
           activeCategory={activeCategory}
           setActiveCategory={setActiveCategory}
@@ -239,9 +268,11 @@ export default function Home() {
 
         {/* 卡片列表 */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {filteredPlatforms.map(platform => (
-            <PlatformCard key={platform.id} platform={platform} />
-          ))}
+          <AnimatePresence mode="popLayout">
+            {filteredPlatforms.map(platform => (
+              <PlatformCard key={platform.id} platform={platform} />
+            ))}
+          </AnimatePresence>
         </div>
 
         {/* 空状态 */}

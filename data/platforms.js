@@ -12,6 +12,11 @@ export const platforms = [
     category: 'platform',
     highlights: ['字节跳动出品', '插件市场丰富', '多渠道发布'],
     difficulty: '低',
+    guides: [
+      { title: '快速入门指南', url: 'https://www.coze.cn/docs/guides/getting_started' },
+      { title: '插件开发教程', url: 'https://www.coze.cn/docs/guides/plugin_development' },
+      { title: '工作流编排技巧', url: 'https://www.coze.cn/docs/guides/workflow' }
+    ],
   },
   {
     id: 'coze-intl',
@@ -26,6 +31,10 @@ export const platforms = [
     category: 'platform',
     highlights: ['海外渠道支持', '与国际平台集成', 'Bot 市场'],
     difficulty: '低',
+    guides: [
+      { title: 'Getting Started', url: 'https://www.coze.com/docs/guides/getting_started' },
+      { title: 'API Reference', url: 'https://www.coze.com/docs/api' }
+    ],
   },
   {
     id: 'dify',
@@ -40,6 +49,11 @@ export const platforms = [
     category: 'framework',
     highlights: ['完全开源', '支持私有部署', 'RAG 支持', 'Prompt 编排'],
     difficulty: '中',
+    guides: [
+      { title: '部署教程', url: 'https://docs.dify.ai/getting-started/install-self-hosted' },
+      { title: 'RAG 最佳实践', url: 'https://docs.dify.ai/features/knowledge-base' },
+      { title: '工作流开发', url: 'https://docs.dify.ai/features/workflow' }
+    ],
   },
   {
     id: 'n8n',
@@ -54,6 +68,10 @@ export const platforms = [
     category: 'automation',
     highlights: ['工作流自动化', 'AI 集成', '自部署', '海外最流行'],
     difficulty: '中',
+    guides: [
+      { title: 'Official Documentation', url: 'https://docs.n8n.io/' },
+      { title: 'AI Integration Guide', url: 'https://docs.n8n.io/integrations/ai/' }
+    ],
   },
   {
     id: 'gensforge',
@@ -68,6 +86,9 @@ export const platforms = [
     category: 'platform',
     highlights: ['新兴平台', '专注 Agent', '国内团队'],
     difficulty: '中',
+    guides: [
+      { title: '平台简介', url: 'https://gensforge.com/docs' }
+    ],
   },
   {
     id: 'dingtalk-ai',
@@ -82,6 +103,9 @@ export const platforms = [
     category: 'platform',
     highlights: ['阿里系', '企业生态', '钉钉集成', '办公自动化'],
     difficulty: '低',
+    guides: [
+      { title: 'AI 助理上手', url: 'https://www.dingtalk.com/qidian/help-detail-1061226456' }
+    ],
   },
   {
     id: 'baidu-agentbuilder',
@@ -96,6 +120,9 @@ export const platforms = [
     category: 'platform',
     highlights: ['百度 AI 生态', '文心大模型', 'AppBuilder'],
     difficulty: '低',
+    guides: [
+      { title: '零代码搭建指南', url: 'https://cloud.baidu.com/doc/AppBuilder/s/Plp06c6x6' }
+    ],
   },
   {
     id: 'autogen',
@@ -110,6 +137,10 @@ export const platforms = [
     category: 'framework',
     highlights: ['微软研究院', '多 Agent 协作', '学术前沿', '对话框架'],
     difficulty: '高',
+    guides: [
+      { title: 'Getting Started', url: 'https://microsoft.github.io/autogen/docs/Getting-Started' },
+      { title: 'Tutorials', url: 'https://microsoft.github.io/autogen/docs/topics' }
+    ],
   },
   {
     id: 'langchain',
@@ -124,6 +155,10 @@ export const platforms = [
     category: 'framework',
     highlights: ['学术圈最流行', '生态丰富', 'LangGraph', '工具链完整'],
     difficulty: '高',
+    guides: [
+      { title: 'LangChain Docs', url: 'https://python.langchain.com/docs/get_started/introduction' },
+      { title: 'LangGraph Tutorial', url: 'https://langchain-ai.github.io/langgraph/' }
+    ],
   },
   {
     id: 'react-agent',
@@ -138,6 +173,9 @@ export const platforms = [
     category: 'framework',
     highlights: ['推理+执行', '学术主流', '任务分解'],
     difficulty: '高',
+    guides: [
+      { title: 'Original Paper', url: 'https://arxiv.org/abs/2210.03629' }
+    ],
   },
   {
     id: 'crewai',
@@ -152,6 +190,9 @@ export const platforms = [
     category: 'framework',
     highlights: ['多 Agent 协作', '角色扮演', '场景化编排'],
     difficulty: '中',
+    guides: [
+      { title: 'Documentation', url: 'https://docs.crewai.com/' }
+    ],
   },
   {
     id: 'flowise',
@@ -166,6 +207,9 @@ export const platforms = [
     category: 'platform',
     highlights: ['拖拽式编排', '轻量级', '易上手', '类 Dify'],
     difficulty: '低',
+    guides: [
+      { title: 'Quick Start', url: 'https://docs.flowiseai.com/getting-started' }
+    ],
   },
   {
     id: 'ollama-dify',
@@ -180,6 +224,10 @@ export const platforms = [
     category: 'local',
     highlights: ['完全本地', '隐私安全', '免费使用', 'Ollama + Dify'],
     difficulty: '高',
+    guides: [
+      { title: 'Ollama Guide', url: 'https://ollama.ai/library' },
+      { title: 'Local Dify Setup', url: 'https://docs.dify.ai/getting-started/install-self-hosted/docker' }
+    ],
   },
 ]
 

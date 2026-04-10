@@ -1,6 +1,8 @@
+import { useState } from 'react'
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
+import { motion } from 'framer-motion'
 import { platforms } from '../../data/platforms'
 
 function getPricingTag(pricing) {
@@ -25,8 +27,40 @@ function getCategoryName(category) {
   return map[category] || category
 }
 
+function RelatedPlatformCard({ p }) {
+  const [imgError, setImgError] = useState(false)
+  
+  return (
+    <Link 
+      key={p.id} 
+      href={`/platform/${p.id}`}
+      className="p-4 border border-gray-100 rounded-xl hover:border-indigo-200 hover:shadow-md transition-all block group"
+    >
+      <div className="flex items-center gap-3">
+        <div className="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center overflow-hidden group-hover:scale-110 transition-transform text-indigo-600 font-bold">
+          {p.logo && !imgError ? (
+            <img 
+              src={p.logo} 
+              alt={p.name} 
+              className="w-full h-full object-contain p-1"
+              onError={() => setImgError(true)}
+            />
+          ) : (
+            <span className="text-xs">{p.name.charAt(0)}</span>
+          )}
+        </div>
+        <div className="min-w-0">
+          <p className="font-medium text-gray-900 text-sm truncate">{p.name}</p>
+          <p className="text-xs text-gray-500 truncate">{p.pricing}</p>
+        </div>
+      </div>
+    </Link>
+  )
+}
+
 export default function PlatformDetail({ platform, relatedPlatforms }) {
   const router = useRouter()
+  const [imgError, setImgError] = useState(false)
   
   if (router.isFallback) {
     return <div className="min-h-screen bg-gray-50 flex items-center justify-center">
@@ -46,8 +80,23 @@ export default function PlatformDetail({ platform, relatedPlatforms }) {
   const pricingStyle = getPricingTag(platform.pricing)
   const related = relatedPlatforms.filter(p => p.id !== platform.id).slice(0, 3)
 
+  const container = {
+    hidden: { opacity: 0 },
+    show: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1
+      }
+    }
+  }
+
+  const item = {
+    hidden: { opacity: 0, y: 20 },
+    show: { opacity: 1, y: 0 }
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 flex flex-col">
       <Head>
         <title>{platform.name} - AI Agent 平台导航</title>
         <meta name="description" content={platform.description} />
@@ -56,7 +105,7 @@ export default function PlatformDetail({ platform, relatedPlatforms }) {
       </Head>
 
       {/* Header */}
-      <header className="bg-white border-b border-gray-100">
+      <header className="bg-white border-b border-gray-100 flex-shrink-0">
         <div className="max-w-4xl mx-auto px-4 py-4">
           <Link href="/" className="text-sm text-gray-500 hover:text-gray-700 flex items-center gap-1">
             ← 返回首页
@@ -65,15 +114,20 @@ export default function PlatformDetail({ platform, relatedPlatforms }) {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-4xl mx-auto px-4 py-8">
+      <motion.main 
+        className="max-w-4xl mx-auto px-4 py-8 flex-grow w-full"
+        variants={container}
+        initial="hidden"
+        animate="show"
+      >
         {/* Platform Header */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
+        <motion.div variants={item} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
           <div className="flex items-start gap-6">
             {/* Logo */}
-            <div className="w-20 h-20 rounded-xl bg-gray-50 flex items-center justify-center overflow-hidden border border-gray-100 flex-shrink-0">
-              {platform.logo ? (
-                <img 
-                  src={platform.logo} 
+            <div className="w-20 h-20 rounded-xl bg-indigo-50 flex items-center justify-center overflow-hidden border border-indigo-100 flex-shrink-0 text-indigo-600 font-bold text-3xl">
+              {platform.logo && !imgError ? (
+                <img
+                  src={platform.logo}
                   alt={platform.name}
                   className="w-14 h-14 object-contain"
                   onError={(e) => {
@@ -90,7 +144,7 @@ export default function PlatformDetail({ platform, relatedPlatforms }) {
                   }}
                 />
               ) : (
-                <span className="text-3xl">🤖</span>
+                <span>{platform.name.charAt(0)}</span>
               )}
             </div>
             
@@ -117,10 +171,10 @@ export default function PlatformDetail({ platform, relatedPlatforms }) {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Quick Info Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+        <motion.div variants={item} className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
           <div className="bg-white rounded-xl p-4 shadow-sm border border-gray-100 text-center">
             <p className="text-xs text-gray-500 mb-1">分类</p>
             <p className="font-semibold text-gray-900">{getCategoryName(platform.category)}</p>
@@ -139,10 +193,10 @@ export default function PlatformDetail({ platform, relatedPlatforms }) {
             <p className="text-xs text-gray-500 mb-1">类型</p>
             <p className="font-semibold text-gray-900">{platform.pricingDetail}</p>
           </div>
-        </div>
+        </motion.div>
 
         {/* Highlights */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
+        <motion.div variants={item} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-4">核心特点</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
             {platform.highlights.map((highlight, idx) => (
@@ -154,40 +208,67 @@ export default function PlatformDetail({ platform, relatedPlatforms }) {
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* Pricing Detail */}
-        <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
+        <motion.div variants={item} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
           <h2 className="text-lg font-semibold text-gray-900 mb-3">收费说明</h2>
           <p className="text-gray-600 leading-relaxed">{platform.pricingDetail}</p>
-        </div>
+        </motion.div>
+
+        {/* Learning Guides */}
+        {platform.guides && platform.guides.length > 0 && (
+          <motion.div variants={item} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6">
+            <h2 className="text-lg font-semibold text-gray-900 mb-4 flex items-center gap-2">
+              <span className="text-xl">📚</span> 学习指南
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              {platform.guides.map((guide, idx) => (
+                <a
+                  key={idx}
+                  href={guide.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-4 bg-indigo-50 rounded-xl border border-indigo-100 group hover:bg-indigo-100 transition-all"
+                >
+                  <span className="text-indigo-900 font-medium group-hover:text-indigo-700 transition-colors">
+                    {guide.title}
+                  </span>
+                  <span className="text-indigo-400 group-hover:translate-x-1 transition-transform">
+                    →
+                  </span>
+                </a>
+              ))}
+            </div>
+          </motion.div>
+        )}
 
         {/* Action Buttons */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+        <motion.div variants={item} className="flex flex-col sm:flex-row gap-4 mb-8">
           <a
             href={platform.website}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex-1 bg-indigo-600 text-white text-center py-3 px-6 rounded-xl font-medium hover:bg-indigo-700 transition-colors"
+            className="flex-1 bg-indigo-600 text-white text-center py-3 px-6 rounded-xl font-medium hover:bg-indigo-700 transition-colors shadow-sm hover:shadow-md"
           >
             访问官网 →
           </a>
           <Link
             href="/"
-            className="flex-1 bg-gray-100 text-gray-700 text-center py-3 px-6 rounded-xl font-medium hover:bg-gray-200 transition-colors"
+            className="flex-1 bg-gray-100 text-gray-700 text-center py-3 px-6 rounded-xl font-medium hover:bg-gray-200 transition-colors shadow-sm"
           >
             查看更多平台
           </Link>
-        </div>
+        </motion.div>
 
         {/* Related Platforms */}
         {related.length > 0 && (
-          <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+          <motion.div variants={item} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">相关平台</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {related.map(p => (
-                <Link 
-                  key={p.id} 
+                <Link
+                  key={p.id}
                   href={`/platform/${p.id}`}
                   className="p-4 border border-gray-100 rounded-xl hover:border-indigo-200 hover:shadow-sm transition-all"
                 >
@@ -220,9 +301,9 @@ export default function PlatformDetail({ platform, relatedPlatforms }) {
                 </Link>
               ))}
             </div>
-          </div>
+          </motion.div>
         )}
-      </main>
+      </motion.main>
 
       {/* Footer */}
       <footer className="border-t border-gray-100 bg-white mt-12">
